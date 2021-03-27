@@ -4,6 +4,9 @@ import CliConfig from './src/cliConfig.js';
 import TerminalController from "./src/terminalController.js";
 import SocketClient from './src/socket.js';
 
+import dotenv from 'dotenv'
+dotenv.config()
+
 const [nodePath, filePath, ...commands] = process.argv;
 
 const config = CliConfig.parseArguments(commands);

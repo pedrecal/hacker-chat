@@ -1,5 +1,5 @@
 class CliConfig {
-  constructor({ username, room, hostUri }) {
+  constructor({ username, room, hostUri = process.env.HOST_URL }) {
     this.username = username;
     this.room = room;
 
