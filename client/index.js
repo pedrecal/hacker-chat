@@ -1,3 +1,7 @@
+#!/usr/bin/env node
+
+// REMEMBER TO: chmod +x index.js
+
 import Events from 'events';
 import EventManager from './src/eventManager.js';
 import CliConfig from './src/cliConfig.js';

@@ -1,11 +1,14 @@
 {
-  "name": "client",
+  "name": "@pedrecal/hacker-chat-client",
   "version": "1.0.0",
-  "description": "",
+  "description": "CLI chat developed in the node expert week",
   "main": "index.js",
   "type": "module",
   "engines": {
     "node": ">=15.12.0"
+  },
+  "bin": {
+    "hacker-chat": "index.js"
   },
   "scripts": {
     "user01": "node index.js --username pedrecal --room room1 --hostUri http://localhost:9898",
