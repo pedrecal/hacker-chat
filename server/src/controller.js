@@ -1,4 +1,4 @@
-import { constants } from "../../client/src/constants.js";
+import { constants } from "./constants.js";
 
 class Controller {
   #users = new Map();
@@ -18,23 +18,39 @@ class Controller {
 
     socket.on('data', this.#onSocketData(id));
     socket.on('error', this.#onSocketClosed(id));
-    socket.on('end', this.#onSocketEnded(id));
+    socket.on('end', this.#onSocketClosed(id));
   }
 
   async joinRoom(socketId, data) {
-    const userData = JSON.parse(data);
-    console.log(`${userData.userName} joined!`[socketId]);
+    console.log(`${data.userName} joined! ${[socketId]}`);
 
-    const { roomId } = userData;
+    const { roomId } = data;
+    const user = this.#updateGlobalUserData(socketId, data);
     const users = this.#joinUserOnRoom(roomId, user);
 
     const currentUsers = Array.from(users.values())
       .map(({ id, userName }) => ({ userName, id }));
 
 
-    this.socketServer.sendMessage(user.socket, constants.events.UPDATE_USERS, currentUsers);
+    this.socketServer.sendMessage(user.socket, constants.event.UPDATE_USERS, currentUsers);
 
-    const user = this.#updateGlobalUserData(socketId, userData);
+    this.broadCast({
+      socketId,
+      roomId,
+      message: { id: socketId, userName: data.userName},
+      event: constants.event.NEW_USER_CONNECTED,
+    })
+  }
+
+  broadCast({ socketId, roomId, event, message, includeCurrentSocket = false}) {
+    const usersOnRoom = this.#rooms.get(roomId);
+
+    for(const [key, user] of usersOnRoom){
+      if(!includeCurrentSocket && key === socketId) {
+        continue;
+      }
+      this.socketServer.sendMessage(user.socket, event, message);
+    }
   }
 
   #joinUserOnRoom(roomId, user) {
@@ -48,12 +64,6 @@ class Controller {
   #onSocketClosed(id) {
     return data => {
       console.log('onSocketClosed', id);
-    }
-  }
-
-  #onSocketEnded(id) {
-    return data => {
-      console.log('onSocketData', data.toString());
     }
   }
 
