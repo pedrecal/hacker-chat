@@ -10,7 +10,8 @@
   "scripts": {
     "user01": "node index.js --username pedrecal --room room1 --hostUri http://localhost:9898",
     "user02": "node index.js --username drek --room room1 --hostUri http://localhost:9898",
-    "user03": "node index.js --username neo --room room1 --hostUri http://localhost:9898",
+    "user03": "node index.js --username neo --room room2 --hostUri https://hacker-chat-pedrecal.herokuapp.com/",
+    "user04": "node index.js --username dal --room room2 --hostUri https://hacker-chat-pedrecal.herokuapp.com/",
     "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
